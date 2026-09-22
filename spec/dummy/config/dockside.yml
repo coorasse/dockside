@@ -1,0 +1,7 @@
+services:
+  echo:
+    image: hashicorp/http-echo
+    ports: ["5678:5678"]
+    x-dockside:
+      test:
+        ports: ["5679:5678"]

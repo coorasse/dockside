@@ -1,0 +1,11 @@
+/.bundle/
+/coverage/
+/pkg/
+/tmp/
+/spec/dummy/tmp/
+/spec/dummy/log/
+/spec/tmp/
+/gemfiles/*.lock
+/.idea/
+/.rspec_status
+Gemfile.lock

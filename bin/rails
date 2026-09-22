@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# Runs the rails command of the dummy app, for example `bin/rails generate dockside:install`.
+
+ENGINE_ROOT = File.expand_path("..", __dir__)
+APP_PATH = File.expand_path("../spec/dummy/config/application", __dir__)
+
+require "bundler/setup"
+require "rails/all"
+require "dockside"
+require "rails/commands"

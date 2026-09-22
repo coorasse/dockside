@@ -1,0 +1,25 @@
+# The containers this app needs in development and test. dockside starts them with `rails server` and
+# before the first test. This is a normal compose file; only the `x-dockside` block belongs to the gem.
+#
+# See https://github.com/renuo/dockside for every option.
+services:
+  # minio:
+  #   image: minio/minio
+  #   command: server /data
+  #   environment:
+  #     MINIO_ROOT_USER: minio
+  #     MINIO_ROOT_PASSWORD: minio-secret
+  #   ports: ["9000:9000"]
+  #   volumes:
+  #     - ./tmp/dockside/${RAILS_ENV}/minio:/data
+  #   x-dockside:
+  #     ready: { http: "/minio/health/live" }   # auto (port answers), none, {http:}, {log:} or {command:}
+  #     timeout: 60                              # seconds to wait until ready, default 300
+  #     after_start:                             # runs once, after the container is ready
+  #       - exec: mc alias set local http://localhost:9000 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
+  #       - exec: mc mb --ignore-existing local/uploads
+  #     test:                                    # what differs in the test environment
+  #       ports: ["9010:9000"]
+  #       volumes: []
+  # Remove the {} below when you add your first service.
+  {}
