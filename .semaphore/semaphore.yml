@@ -1,0 +1,61 @@
+version: "v1.0"
+name: dockside
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+auto_cancel:
+  running:
+    when: "true"
+
+global_job_config:
+  prologue:
+    commands:
+      - checkout --use-cache
+      - sem-version ruby 3.4
+      - export BUNDLE_PATH=$PWD/vendor/bundle
+      - cache restore gems-$(checksum dockside.gemspec)-$(checksum ${BUNDLE_GEMFILE:-Gemfile})
+      - bundle install -j 4
+      - cache store gems-$(checksum dockside.gemspec)-$(checksum ${BUNDLE_GEMFILE:-Gemfile}) vendor/bundle
+
+blocks:
+  - name: lint
+    execution_time_limit:
+      minutes: 10
+    task:
+      jobs:
+        - name: standardrb
+          commands:
+            - bin/fastcheck
+
+  - name: tests
+    execution_time_limit:
+      minutes: 15
+    task:
+      jobs:
+        - name: rspec
+          matrix:
+            - env_var: BUNDLE_GEMFILE
+              values:
+                - gemfiles/rails_7_1.gemfile
+                - gemfiles/rails_7_2.gemfile
+                - gemfiles/rails_8_0.gemfile
+                - gemfiles/rails_8_1.gemfile
+          commands:
+            - bin/check
+
+  - name: integration
+    execution_time_limit:
+      minutes: 15
+    task:
+      env_vars:
+        - name: DOCKER
+          value: "1"
+      jobs:
+        - name: real docker
+          commands:
+            - bundle exec rspec spec/integration
+
+promotions:
+  - name: Release gem
+    pipeline_file: release.yml

@@ -1,5 +1,8 @@
 # dockside
 
+[![Build Status](https://coorasse.semaphoreci.com/badges/dockside/branches/main.svg)](https://coorasse.semaphoreci.com/projects/dockside)
+[![Gem Version](https://badge.fury.io/rb/dockside.svg)](https://rubygems.org/gems/dockside)
+
 Starts the Docker containers your Rails app needs, when your app starts.
 
 ## The problem
